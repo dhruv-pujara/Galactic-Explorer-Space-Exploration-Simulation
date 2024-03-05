@@ -173,4 +173,8 @@ public class GalacticMap {
 
         return false;
     }
+
+    public int getSize(){
+        return grid.length;
+    }
 }
