@@ -26,6 +26,8 @@ public class CargoShip extends Spaceship {
      */
     public CargoShip(String id, int x, int y, double cargoCapacity, double currentCargo, int targetX, int targetY) {
         // Initialize CargoShip attributes properly
+        super(id, x, y, SpaceshipType.CARGOSHIP);
+        // do more
     }
 
     /**

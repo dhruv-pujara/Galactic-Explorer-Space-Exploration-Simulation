@@ -6,6 +6,11 @@
 public abstract class Spaceship {
 
     // attributes:
+    private String id;
+    private int x;
+    private int y;
+    private SpaceshipType type;
+
 
     // The unique identifier of the spaceship
     // The current coordinates of the spaceship
@@ -19,67 +24,86 @@ public abstract class Spaceship {
      * @param ....
      *
      */
-    // constructor goes here...
+    public Spaceship(String id, int x, int y, SpaceshipType type){
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.type = type;
+    }
 
     /**
      * Abstract method to define the movement behavior of the spaceship.
      *
-     * @param ...
      */
-    // move ....
+    public abstract void move(GalacticMap galacticMap);
 
     /**
      * Abstract method to define the interaction behavior of the spaceship with another spaceship.
      *
-     * @param ....
+     * @param other The other spaceship to interact with
      */
-    // interact ...
+    public abstract void interact(GalacticMap galacticMap, Spaceship other);
 
 
     // Getters and setters
 
     /**
      * Retrieves the unique identifier of the spaceship.
-     *
-     * ....
+     * @return The ID of the spaceship
      */
     // getID
+    protected String getID(){
+        return id;
+    }
+
 
     /**
      * Retrieves the current x-coordinate of the spaceship.
-     *
-     * ....
+     * @return The x-coordinate of the spaceship
      */
     // getX
+    protected int getX(){
+        return x;
+    }
 
     /**
      * Retrieves the current y-coordinate of the spaceship.
-     *
-     * .....
+     * @return The y-coordinate of the spaceship
      */
     // getY
+    protected int getY() {
+        return y;
+    }
 
     /**
      * Retrieves the type of the spaceship.
-     *
-     * .....
+     * <p>
+     * @return The type of spaceship
      */
     // getType
+    protected SpaceshipType getType() {
+        return type;
+    }
 
     /**
      * Sets the x-coordinate of the spaceship to the specified value.
-     *
-     * @param ....
+     * @param newX The new x-coordinate to set
      */
     // setX
+    public void setX(int newX){
+        this.x = newX;
+
+    }
 
     /**
      * Sets the y-coordinate of the spaceship to the specified value.
-     *
-     * @param .....
+     * @param newY The new x-coordinate to set
      */
     // setY
+    public void setY(int newY) {
+        this.y = newY;
 
+    }
 
     /**
      * Calculates the distance between this spaceship and another spaceship.

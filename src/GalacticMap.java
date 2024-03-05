@@ -80,6 +80,7 @@ public class GalacticMap {
     @Override
     public String toString() {
 
+        return null;
     }
 
     /**
@@ -110,6 +111,7 @@ public class GalacticMap {
     private boolean isValidMove(int newX, int newY) {
         // Check if the new position is within the grid boundaries
 
+        return false;
     }
 
     /**
@@ -121,6 +123,7 @@ public class GalacticMap {
     private boolean isCollision(int newX, int newY) {
         // Check if the new position is occupied by another spaceship
 
+        return false;
     }
 
     /**
@@ -145,6 +148,7 @@ public class GalacticMap {
         // Check if all cargoes have reached their destination
         //...
 
+        return false;
     }
 
     /**
@@ -155,6 +159,7 @@ public class GalacticMap {
      */
     public boolean allExplorersAndCargoesRemoved() {
 
+        return false;
     }
 
     /**
@@ -166,5 +171,6 @@ public class GalacticMap {
     public boolean allFightersReported() {
         // Check if explorers have interacted/reported all fighters
 
+        return false;
     }
 }

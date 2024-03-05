@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * The FileReader class provides static methods for reading data from a file and constructing a GalacticMap object.
@@ -20,8 +23,17 @@ public class FileReader {
      */
 
     public static GalacticMap readFromFile(String fileName) {
+        int size = 1;
+        GalacticMap map = new GalacticMap(size);
+        java.io.FileReader fr = null;
+        try {
+            fr = new java.io.FileReader(new File(fileName));
+        } catch (FileNotFoundException e){
+            throw new RuntimeException(e);
+        }
         // Your code goes here ....
 
         // hint: you need to call placeSpaceship method....
+        return map;
     }
 }

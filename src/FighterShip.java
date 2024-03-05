@@ -17,6 +17,8 @@ public class FighterShip extends Spaceship {
      */
     public FighterShip(String id, int x, int y, int damage) {
         // Initialize FighterShip attributes
+        super(id, x, y, SpaceshipType.FIGHTER);
+        // do more
     }
 
     /**
