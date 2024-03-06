@@ -29,12 +29,12 @@ public class FileReader {
         Set<String> encounteredPositions = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new java.io.FileReader(fileName))){
             String firstLine = br.readLine();
-            if (firstLine == null){
+            if (firstLine == null || firstLine.trim().isEmpty()){
                 throw new IllegalArgumentException("Invalid file format: Missing map size.");
             }
             int mapSize;
             try{
-                mapSize = Integer.parseInt(br.readLine().trim());
+                mapSize = Integer.parseInt(firstLine.trim());
             }catch (NumberFormatException e){
                 throw new IllegalArgumentException("Invalid file format: Missing map size.");
             }

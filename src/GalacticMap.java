@@ -79,8 +79,27 @@ public class GalacticMap {
      */
     @Override
     public String toString() {
+        StringBuilder result = new StringBuilder();
+        for(int i = 0; i< grid.length; i++){
+            for(int j = 0; j < grid[i].length; j++){
+                if (grid[i][j] == null){
+                    result.append("[ ]");
+                } else {
+                    String type = null;
+                    if(grid[i][j] instanceof ExplorerShip) {
+                        type = "E-";
+                    } else if(grid[i][j] instanceof FighterShip){
+                        type = "F-";
+                    } else if(grid[i][j] instanceof CargoShip){
+                        type = "C-";
+                    }
+                    result.append(type).append(((Spaceship) grid[i][j]).getID());
+                }
+            }
+            result.append("\n");
+        }
 
-        return null;
+        return result.toString();
     }
 
     /**
