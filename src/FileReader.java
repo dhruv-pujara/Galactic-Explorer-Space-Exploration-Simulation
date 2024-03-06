@@ -1,5 +1,7 @@
 import java.io.*;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * The FileReader class provides static methods for reading data from a file and constructing a GalacticMap object.
@@ -23,6 +25,8 @@ public class FileReader {
 
     public static GalacticMap readFromFile(String fileName){
         GalacticMap galacticMap = null;
+        Set<String> encounteredIds = new HashSet<>();
+        Set<String> encounteredPositions = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new java.io.FileReader(fileName))){
             String firstLine = br.readLine();
             if (firstLine == null){
@@ -46,15 +50,34 @@ public class FileReader {
                     throw new IllegalArgumentException("Invalid data format: Missing spaceship attributes.");
                 }
                 String type = parts[0];
+                if(!type.equals("FIGHTER") && !type.equals("EXPLORER") && !type.equals("CARGOSHIP")){
+                    throw new IllegalArgumentException("Invalid spaceship type: " + type);
+                }
                 String id = parts[1];
+                if(id.length() != 5){
+                    throw new IllegalArgumentException("Invalid ID length: " + id);
+                }
+                if (encounteredIds.contains(id)){
+                    throw new IllegalArgumentException("Non-unique ID:" +id);
+                }
+                encounteredIds.add(id);
+
                 int x, y;
                 try {
                      x = Integer.parseInt(parts[2]);
                      y = Integer.parseInt(parts[3]);
+                     if(x < 0 || x >= mapSize || y < 0 || y >= mapSize){
+                         throw new ArrayIndexOutOfBoundsException("Wrong input file! position is outside of the map!");
+                     }
                 } catch (NumberFormatException e){
                     System.err.println("Invalid data format: Unable to parse numeric value");
                     continue;
                 }
+                String position = x + "," + y;
+                if (encounteredPositions.contains(position)){
+                    throw new IllegalArgumentException("Wrong input file! the position is filled with with another item!");
+                }
+                encounteredIds.add(position);
 
                 switch (type){
                     case "FIGHTER":
@@ -80,6 +103,9 @@ public class FileReader {
                         break;
 
                     case "CARGOSHIP":
+                        if (parts.length < 8){
+                            throw new IllegalArgumentException("Invalid data format: Missing cargo ship attributes.");
+                        }
                         double cargoCapacity, currentCargo;
                         int targetX, targetY;
                         try {
