@@ -84,7 +84,7 @@ public class GalacticMap {
             for(int j = 0; j < grid[i].length; j++){
                 Spaceship currentShip = grid[i][j];
                 if (grid[i][j] == null){
-                    result.append("[. . . . . . . . .]");
+                    result.append("[         ]");
                 } else {
                     String type = null;
                     if(grid[i][j] instanceof ExplorerShip) {
@@ -94,7 +94,7 @@ public class GalacticMap {
                     } else if(grid[i][j] instanceof CargoShip){
                         type = "C-";
                     }
-                    result.append("[").append(type).append(((Spaceship) currentShip).getID()).append("]");
+                    result.append("[ ").append(type).append(((Spaceship) currentShip).getID()).append(" ]");
                 }
             }
             result.append("\n");

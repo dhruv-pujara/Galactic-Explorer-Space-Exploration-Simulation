@@ -23,29 +23,52 @@ public class ExplorerShip extends Spaceship {
     /**
      * Implements the movement behavior of the explorer ship within the galactic map.
      * The explorer ship moves in a zigzag pattern, alternating between horizontal and vertical movements.
-     *
+     * <p>
      * .........
-     *
      */
     @Override
     public void move(GalacticMap galacticMap) {
         System.out.print("........Moving.......");
+        int x = getX();
+        int y = getY();
 
-        // Implementation for explorer ship movement
-        // they move in a zigzag pattern, alternating between horizontal and vertical movements.
+        if (moveHorizontally) {
+            y++;
+        } else {
+            x++;
+        }
+        if (x < 0 && x >= galacticMap.getSize() && y < 0 && y >= galacticMap.getSize()) {
+            System.out.println("Moving Failed! out of bounds x or y!");
+        }
+        if (galacticMap.getSpaceshipAt(x, y) != null) {
+            System.out.println("Moving Failed! the position is filled with another spaceship!");
+        }
+        setX(x);
+        setY(y);
+        System.out.println("Move Configuration");
+        System.out.println(galacticMap.toString());
 
     }
 
     /**
      * Implements the interaction behavior of the explorer ship with another spaceship.
      * The explorer ship reports nearby spaceships found within its scan range during interaction.
-     *
+     * <p>
      * ......
      */
     @Override
     public void interact(GalacticMap galacticMap, Spaceship other) {
         System.out.println(".........interacting...........with.... " + other.getName());
 
-        // Implementation for explorer ship interaction
+        if(other instanceof ExplorerShip){
+            System.out.println("the spaceship cannot interact with itself");
+        }
+        int distance = calculateDistance(other);
+        if(distance <= scanRange){
+            System.out.println("Found" + other.getName() + " at distance: " + distance);
+        } else{
+            System.out.println("Spaceship: " + other.getName() + " is not in the scan-range");
+        }
+
     }
 }
