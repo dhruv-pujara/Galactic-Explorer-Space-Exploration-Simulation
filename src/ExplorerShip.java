@@ -37,17 +37,17 @@ public class ExplorerShip extends Spaceship {
         } else {
             x++;
         }
-        if (x < 0 && x >= galacticMap.getSize() && y < 0 && y >= galacticMap.getSize()) {
+        if (x < 0 || x >= galacticMap.getSize()  || y < 0 || y >= galacticMap.getSize()) {
             System.out.println("Moving Failed! out of bounds x or y!");
         }
         if (galacticMap.getSpaceshipAt(x, y) != null) {
             System.out.println("Moving Failed! the position is filled with another spaceship!");
+        } else {
+            setX(x);
+            setY(y);
+            System.out.println("Move Configuration");
+            System.out.println(galacticMap.toString());
         }
-        setX(x);
-        setY(y);
-        System.out.println("Move Configuration");
-        System.out.println(galacticMap.toString());
-
     }
 
     /**

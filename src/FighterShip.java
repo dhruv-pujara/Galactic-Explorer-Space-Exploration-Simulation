@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Random;
 /**
  * The FighterShip class represents a spaceship specialized in combat within the galactic space.
@@ -41,11 +42,54 @@ public class FighterShip extends Spaceship {
     @Override
     public void move(GalacticMap galacticMap) {
         System.out.print("........Moving.......");
+        int x = getX();
+        int y = getY();
 
-        // Implementation for fighter ship movement
+        int direction = getRandomDirection();
 
+        switch (direction) {
+            case 0:
+                x--;
+                break;
+            case 1:
+                x++;
+                break;
+            case 2:
+                y--;
+                break;
+            case 3:
+                y++;
+                break;
+            case 4:
+                x++;
+                y++;
+                break;
+            case 5:
+                x++;
+                y--;
+                break;
+            case 6:
+                x--;
+                y++;
+                break;
+            case 7:
+                x--;
+                y--;
+                break;
+        }
+
+        if (x < 0 || x >= galacticMap.getSize()  || y < 0 || y >= galacticMap.getSize()) {
+            System.out.println("Moving Failed! out of bounds x or y!");
+        }
+        if (galacticMap.getSpaceshipAt(x, y) != null) {
+            System.out.println("Moving Failed! the position is filled with another spaceship!");
+        } else {
+            setX(x);
+            setY(y);
+            System.out.println("Move Configuration");
+            System.out.println(galacticMap.toString());
+        }
     }
-
     /**
      * Implements the interaction behavior of the fighter ship with another spaceship.
      * The fighter ship engages in combat with other spaceships during interaction.
@@ -57,8 +101,17 @@ public class FighterShip extends Spaceship {
     public void interact(GalacticMap galacticMap, Spaceship other) {
         System.out.println(".........interacting...........with.... " + other.getName());
 
-        // Implementation for fighter ship interaction (e.g., combat)
-
+        if(other instanceof FighterShip){
+            System.out.println("fighters do not fight with fighters");
+        }
+        int distance = calculateDistance(other);
+        if(damage < distance){
+            System.out.println("damage is less than distance!");
+        }
+        System.out.println("FIGHTER " + getID() + " destroyed spaceship: " + other.getName() + " " + other.getID());
+        galacticMap.removeSpaceshipAt(other.getX(), other.getY());
+        System.out.println("Interaction Configuration");
+        System.out.println(galacticMap.toString());
     }
 }
 
