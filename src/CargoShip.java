@@ -27,6 +27,7 @@ public class CargoShip extends Spaceship {
     public CargoShip(String id, int x, int y, double cargoCapacity, double currentCargo, int targetX, int targetY) {
         // Initialize CargoShip attributes properly
         super(id, x, y, SpaceshipType.CARGOSHIP);
+        this.reachedDestination = false;
         this.cargoCapacity = cargoCapacity;
         this.currentCargo = currentCargo;
         this.targetX = targetX;
@@ -43,9 +44,37 @@ public class CargoShip extends Spaceship {
 
         System.out.print("........Moving.......");
 
-        // CargoShip-specific movement logic
+        int x = getX();
+        int y = getY();
 
+        if (isReachedDestination()){
+            System.out.println("CargoShip: " + getID() + " is already in destination");
+        }
+        if (x < targetX){
+            x++;
+        } else if (x > targetX){
+            x--;
+        }
+        if(x == targetX){
+            if(y < targetY){
+                y++;
+            } else if(y > targetY){
+                y--;
+            }
+        if(x < 0 || x >= galacticMap.getSize() || y < 0 || y > galacticMap.getSize()) {
+            System.out.println("Moving Failed! out of bound x or y!");
+        }
+        if(galacticMap.getSpaceshipAt(x, y) != null) {
+            System.out.println("Moving Failed! the position is filled with another spaceship!");
+        }
+
+            setX(x);
+            setY(y);
+            System.out.println("Move Configuration");
+            System.out.println(galacticMap.toString());
+        }
     }
+
 
     /**
      * Implements the interaction behavior of the cargo ship with another spaceship.
@@ -57,8 +86,13 @@ public class CargoShip extends Spaceship {
     public void interact(GalacticMap galacticMap, Spaceship other) {
 
         System.out.println(".........interacting...........with.... " + other.getName());
-
-        // CargoShip interaction logic
+        if( other instanceof CargoShip){
+            System.out.println("CargoShip cannot interact with itself");
+        } else if (other instanceof FighterShip){
+            System.out.println("CargoShip cannot interact with FIGHTER");
+        }else if(other instanceof ExplorerShip){
+            System.out.println("CargoShip cannot interact with EXPLORER");
+        }
     }
 
     /**
@@ -67,6 +101,11 @@ public class CargoShip extends Spaceship {
      * ...........
      */
     public void loadCargo(double cargoAmount) {
+        if(currentCargo + cargoAmount > cargoCapacity){
+            System.out.println("Cargo capacity exceeded! Cannot load cargo onto C-" + getID());
+        } else{
+            currentCargo += cargoAmount;
+        }
 
     }
 
@@ -76,6 +115,11 @@ public class CargoShip extends Spaceship {
      * ..............
      */
     public void unloadCargo(double cargoAmount) {
+        if (cargoAmount > currentCargo){
+            System.out.println("Cannot unload more cargo that what's currently on board.");
+        } else{
+            currentCargo -= cargoAmount;
+        }
 
     }
 
