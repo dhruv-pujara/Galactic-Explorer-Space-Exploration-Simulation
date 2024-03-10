@@ -181,11 +181,20 @@ public class GalacticMap {
      *
      */
     public boolean allCargoesReachedDestination() {
-        //...
-        // Check if all cargoes have reached their destination
-        //...
-
-        return false;
+        boolean anyCargo = false;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                Spaceship spaceship = grid[i][j];
+                if (spaceship != null && spaceship.getType() == SpaceshipType.CARGOSHIP) {
+                    anyCargo = true;
+                    CargoShip cargoShip = (CargoShip) spaceship;
+                    if (!cargoShip.isReachedDestination()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return anyCargo;
     }
 
     /**
@@ -195,9 +204,17 @@ public class GalacticMap {
      *
      */
     public boolean allExplorersAndCargoesRemoved() {
-
-        return false;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                Spaceship spaceship = grid[i][j];
+                if (spaceship != null && (spaceship.getType() == SpaceshipType.EXPLORER || spaceship.getType() == SpaceshipType.CARGOSHIP)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
+
 
     /**
      * Checks if all fighters have been reported by explorers.
@@ -206,9 +223,16 @@ public class GalacticMap {
      *
      */
     public boolean allFightersReported() {
-        // Check if explorers have interacted/reported all fighters
-
-        return false;
+        HashSet<FighterShip> reportedFighters = new HashSet<>();
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[i].length; j++){
+                Spaceship spaceship = grid[i][j];
+                if(spaceship instanceof FighterShip && !reportList.contains(spaceship)){
+                    reportedFighters.add((FighterShip) spaceship);
+                }
+            }
+        }
+        return reportedFighters.size() == reportList.size();
     }
 
     public int getSize(){
