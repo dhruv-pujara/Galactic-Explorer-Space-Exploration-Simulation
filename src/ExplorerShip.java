@@ -29,24 +29,29 @@ public class ExplorerShip extends Spaceship {
     @Override
     public void move(GalacticMap galacticMap) {
         System.out.print("........Moving.......");
+        System.out.println();
         int x = getX();
         int y = getY();
+        int size = galacticMap.toString().split("\n").length;
 
         if (moveHorizontally) {
             y++;
+            galacticMap.moveSpaceshipTo(this, x, y);
         } else {
             x++;
+            galacticMap.moveSpaceshipTo(this, x, y);
         }
-        if (x < 0 || x >= galacticMap.getSize()  || y < 0 || y >= galacticMap.getSize()) {
+        if (x < 0 || x >= size  || y < 0 || y >= size) {
             System.out.println("Moving Failed! out of bounds x or y!");
         }
         if (galacticMap.getSpaceshipAt(x, y) != null) {
             System.out.println("Moving Failed! the position is filled with another spaceship!");
         } else {
+            galacticMap.moveSpaceshipTo(this,x,y);
             setX(x);
             setY(y);
             System.out.println("Move Configuration");
-            System.out.println(galacticMap.toString());
+            return;
         }
     }
 
@@ -62,13 +67,17 @@ public class ExplorerShip extends Spaceship {
 
         if(other instanceof ExplorerShip){
             System.out.println("the spaceship cannot interact with itself");
-        }
-        int distance = calculateDistance(other);
-        if(distance <= scanRange){
+        }else if(other instanceof FighterShip){
+            int distance = calculateDistance(other);
+            if(distance <= scanRange){
             System.out.println("Found" + other.getName() + " at distance: " + distance);
+            if(other.getType() == SpaceshipType.FIGHTER) {
+                galacticMap.AddReportedFighter((FighterShip) other);
+            }
         } else{
             System.out.println("Spaceship: " + other.getName() + " is not in the scan-range");
         }
 
+        }
     }
 }

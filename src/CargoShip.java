@@ -43,37 +43,48 @@ public class CargoShip extends Spaceship {
     public void move(GalacticMap galacticMap) {
 
         System.out.print("........Moving.......");
+        System.out.println();
+        if(isReachedDestination()){
+            System.out.println("CargoShip: " + getID() + " is already in destination");
+            return;
+        }
 
         int x = getX();
         int y = getY();
+        int size = galacticMap.toString().split("\n").length;
 
-        if (isReachedDestination()){
-            System.out.println("CargoShip: " + getID() + " is already in destination");
-        }
-        if (x < targetX){
+        if (x < targetX) {
             x++;
-        } else if (x > targetX){
-            x--;
-        }
-        if(x == targetX){
-            if(y < targetY){
-                y++;
-            } else if(y > targetY){
-                y--;
-            }
-        if(x < 0 || x >= galacticMap.getSize() || y < 0 || y > galacticMap.getSize()) {
-            System.out.println("Moving Failed! out of bound x or y!");
-        }
-        if(galacticMap.getSpaceshipAt(x, y) != null) {
-            System.out.println("Moving Failed! the position is filled with another spaceship!");
-        }
+            galacticMap.moveSpaceshipTo(this, x, y);
 
-            setX(x);
-            setY(y);
-            System.out.println("Move Configuration");
-            System.out.println(galacticMap.toString());
+        } else if (x > targetX) {
+            x--;
+            galacticMap.moveSpaceshipTo(this, x, y);
+
+        }
+        if (x == targetX) {
+            if (y < targetY) {
+                y++;
+                galacticMap.moveSpaceshipTo(this, x, y);
+
+            } else if (y > targetY) {
+                y--;
+                galacticMap.moveSpaceshipTo(this, x, y);
+
+            }
+            if (x < 0 || x >= size || y < 0 || y > size) {
+                System.out.println("Moving Failed! out of bound x or y!");
+            }
+            if (galacticMap.getSpaceshipAt(x, y) != null) {
+                System.out.println("Moving Failed! the position is filled with another spaceship!");
+            }
+                setX(x);
+                setY(y);
+                System.out.println("Move Configuration");
+                System.out.println(galacticMap.toString());
         }
     }
+
 
 
     /**
@@ -86,12 +97,23 @@ public class CargoShip extends Spaceship {
     public void interact(GalacticMap galacticMap, Spaceship other) {
 
         System.out.println(".........interacting...........with.... " + other.getName());
-        if( other instanceof CargoShip){
+        if (other== this) {
             System.out.println("CargoShip cannot interact with itself");
-        } else if (other instanceof FighterShip){
+        } else if (other instanceof FighterShip) {
             System.out.println("CargoShip cannot interact with FIGHTER");
-        }else if(other instanceof ExplorerShip){
+        } else if (other instanceof ExplorerShip) {
             System.out.println("CargoShip cannot interact with EXPLORER");
+        }else if(other instanceof CargoShip otherCargoShip) {
+            double transferAmount = Math.abs(otherCargoShip.getCurrentCargo() - this.currentCargo) / 2.0;
+            if (otherCargoShip.getCurrentCargo() > this.currentCargo) {
+                otherCargoShip.unloadCargo(transferAmount);
+                this.loadCargo(transferAmount);
+            } else if (otherCargoShip.getCurrentCargo() < this.currentCargo) {
+                otherCargoShip.loadCargo(transferAmount);
+                this.unloadCargo(transferAmount);
+            }
+        }else{
+            System.out.println("Cargoship cannot interact with " + other.getType());
         }
     }
 

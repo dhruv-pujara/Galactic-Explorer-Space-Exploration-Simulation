@@ -49,7 +49,11 @@ public class GalacticMap {
      * @return The spaceship at the specified coordinates.
      */
     public Spaceship getSpaceshipAt(int x, int y) {
-        return this.grid[x][y];
+        if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
+            return this.grid[x][y];
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -73,25 +77,24 @@ public class GalacticMap {
 
     /**
      * Returns a string representation of the GalacticMap.
-     *
+     * <p>
      * ...............
-     *
      */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for(int i = 0; i< grid.length; i++){
-            for(int j = 0; j < grid[i].length; j++){
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
                 Spaceship currentShip = grid[i][j];
-                if (grid[i][j] == null){
+                if (grid[i][j] == null) {
                     result.append("[         ]");
                 } else {
                     String type = null;
-                    if(grid[i][j] instanceof ExplorerShip) {
+                    if (grid[i][j] instanceof ExplorerShip) {
                         type = "E-";
-                    } else if(grid[i][j] instanceof FighterShip){
+                    } else if (grid[i][j] instanceof FighterShip) {
                         type = "F-";
-                    } else if(grid[i][j] instanceof CargoShip){
+                    } else if (grid[i][j] instanceof CargoShip) {
                         type = "C-";
                     }
                     result.append("[ ").append(type).append(((Spaceship) currentShip).getID()).append(" ]");
@@ -110,21 +113,22 @@ public class GalacticMap {
      * @param y The y-coordinate of the position to remove the spaceship.
      */
     public void removeSpaceshipAt(int x, int y) {
-        this.grid[x][y] = null;
+        if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
+            this.grid[x][y] = null;
+        }
     }
 
     /**
      * Moves the specified spaceship to the new coordinates in the GalacticMap.
-     *
+     * <p>
      * ........
-     *
      */
     public void moveSpaceshipTo(Spaceship spaceship, int newX, int newY) {
-        if(!isValidMove(newX, newY)){
+        if (!isValidMove(newX, newY)) {
             System.out.println("Moving failed! out of bound x or y!");
             return;
         }
-        if(isCollision(newX, newY)){
+        if (isCollision(newX, newY)) {
             System.out.println("Moving Failed! the position is filled with another spaceship!");
             return;
         }
@@ -134,11 +138,11 @@ public class GalacticMap {
         grid[newX][newY] = spaceship;
         System.out.println(toString());
     }
+
     /**
      * Checks if the specified coordinates represent a valid move within the GalacticMap grid.
-     *
+     * <p>
      * ............
-     *
      */
     private boolean isValidMove(int newX, int newY) {
         return newX >= 0 && newX < grid.length && newY >= 0 && newY < grid[0].length;
@@ -146,9 +150,8 @@ public class GalacticMap {
 
     /**
      * Checks if the specified coordinates represent a collision with another spaceship.
-     *
+     * <p>
      * .......
-     *
      */
     private boolean isCollision(int newX, int newY) {
         return grid[newX][newY] != null;
@@ -156,18 +159,17 @@ public class GalacticMap {
 
     /**
      * Places the specified spaceship, that is read from the file, in the GalacticMap.
-     *
+     * <p>
      * .............
-     *
      */
     public void placeSpaceship(Spaceship spaceship) {
         int x = spaceship.getX();
         int y = spaceship.getY();
 
-        if(!isValidMove(x, y)){
+        if (!isValidMove(x, y)) {
             throw new ArrayIndexOutOfBoundsException("Wrong input file! position is outside of the map!");
         }
-        if(isCollision(x, y)){
+        if (isCollision(x, y)) {
             throw new IllegalArgumentException("Wrong input file! the position is filled with another item!");
         }
         grid[x][y] = spaceship;
@@ -176,9 +178,8 @@ public class GalacticMap {
 
     /**
      * Checks if all cargoes have reached their destinations.
-     *
+     * <p>
      * ..............
-     *
      */
     public boolean allCargoesReachedDestination() {
         boolean anyCargo = false;
@@ -199,9 +200,8 @@ public class GalacticMap {
 
     /**
      * Checks if all explorers and cargoes have been removed by fighters.
-     *
+     * <p>
      * ............
-     *
      */
     public boolean allExplorersAndCargoesRemoved() {
         for (int i = 0; i < grid.length; i++) {
@@ -218,24 +218,18 @@ public class GalacticMap {
 
     /**
      * Checks if all fighters have been reported by explorers.
-     *
+     * <p>
      * ................
-     *
      */
     public boolean allFightersReported() {
-        HashSet<FighterShip> reportedFighters = new HashSet<>();
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[i].length; j++){
-                Spaceship spaceship = grid[i][j];
-                if(spaceship instanceof FighterShip && !reportList.contains(spaceship)){
-                    reportedFighters.add((FighterShip) spaceship);
+        for (Spaceship[] spaceships : grid) {
+            for (Spaceship spaceship : spaceships) {
+                if (spaceship instanceof FighterShip && !reportList.contains(spaceship)) {
+                    return false;
                 }
             }
-        }
-        return reportedFighters.size() == reportList.size();
-    }
 
-    public int getSize(){
-        return grid.length;
+        }
+        return true;
     }
 }
