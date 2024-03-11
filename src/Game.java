@@ -6,6 +6,10 @@ import java.util.Random;
  * The Game class simulates a space exploration game where spaceships interact within a galactic map.
  * It initializes the game, executes the game loop, and checks for end conditions.
  * @author Parisa Daeijavad
+ *
+ * Name:Dhruv Pujara
+ * Date: 11/03/2024
+ * Tutorial: T13
  */
 public class Game {
     /**
