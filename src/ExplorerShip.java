@@ -1,7 +1,7 @@
 /**
  * The ExplorerShip class represents a spaceship specialized in exploration within the galactic space.
  * It inherits from the Spaceship class and defines specific movement and interaction behaviors.
- * @author Parisa Daeijavad
+ * @author Dhruv Pujara
  */
 public class ExplorerShip extends Spaceship {
     private int scanRange; // The range within which the explorer ship can scan for nearby spaceships
@@ -23,13 +23,13 @@ public class ExplorerShip extends Spaceship {
     /**
      * Implements the movement behavior of the explorer ship within the galactic map.
      * The explorer ship moves in a zigzag pattern, alternating between horizontal and vertical movements.
-     * <p>
-     * .........
+     * @param galacticMap The galactic map on which the explorer ship moves.
      */
     @Override
     public void move(GalacticMap galacticMap) {
         System.out.print("........Moving.......");
         System.out.println();
+        // Get the current coordinates of the spaceship
         int x = getX();
         int y = getY();
         int size = galacticMap.toString().split("\n").length;
@@ -41,9 +41,11 @@ public class ExplorerShip extends Spaceship {
             x++;
             galacticMap.moveSpaceshipTo(this, x, y);
         }
+        // Check if the spaceship is out of bounds
         if (x < 0 || x >= size  || y < 0 || y >= size) {
             System.out.println("Moving Failed! out of bounds x or y!");
         }
+        // Check if the desired position is occupied by another spaceship
         if (galacticMap.getSpaceshipAt(x, y) != null) {
             System.out.println("Moving Failed! the position is filled with another spaceship!");
         } else {
@@ -58,25 +60,27 @@ public class ExplorerShip extends Spaceship {
     /**
      * Implements the interaction behavior of the explorer ship with another spaceship.
      * The explorer ship reports nearby spaceships found within its scan range during interaction.
-     * <p>
-     * ......
+     * @param galacticMap The galactic map on which the interactions occur
+     * other The other spaceship to interact with
      */
     @Override
     public void interact(GalacticMap galacticMap, Spaceship other) {
         System.out.println(".........interacting...........with.... " + other.getName());
-
+        // Check the type of the other spaceship
         if(other instanceof ExplorerShip){
             System.out.println("the spaceship cannot interact with itself");
+            // If the other spaceship is a fighter ship, calculate the distance between them
         }else if(other instanceof FighterShip){
             int distance = calculateDistance(other);
-            if(distance <= scanRange){
-            System.out.println("Found" + other.getName() + " at distance: " + distance);
-            if(other.getType() == SpaceshipType.FIGHTER) {
+            if(distance <= scanRange && distance != 0){
+                System.out.println("Found" + other.getName() + " at distance: " + distance);
+                if(other.getType() == SpaceshipType.FIGHTER) {
                 galacticMap.AddReportedFighter((FighterShip) other);
             }
-        } else{
-            System.out.println("Spaceship: " + other.getName() + " is not in the scan-range");
-        }
+                // If the distance is beyond the scan range, print that the spaceship is not in range
+            } else{
+                System.out.println("Spaceship: " + other.getName() + " is not in the scan-range");
+            }
 
         }
     }

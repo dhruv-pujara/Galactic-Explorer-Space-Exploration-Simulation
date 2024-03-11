@@ -127,16 +127,17 @@ public class GalacticMap {
         if (!isValidMove(newX, newY)) {
             System.out.println("Moving failed! out of bound x or y!");
             return;
-        }
-        if (isCollision(newX, newY)) {
+        } else if (isCollision(newX, newY)) {
             System.out.println("Moving Failed! the position is filled with another spaceship!");
             return;
+        } else {
+//            grid[spaceship.getX()][spaceship.getY()] = null;
+            removeSpaceshipAt(spaceship.getX(), spaceship.getY());
+            spaceship.setX(newX);
+            spaceship.setY(newY);
+            grid[newX][newY] = spaceship;
+            System.out.println(toString());
         }
-        grid[spaceship.getX()][spaceship.getY()] = null;
-        spaceship.setX(newX);
-        spaceship.setY(newY);
-        grid[newX][newY] = spaceship;
-        System.out.println(toString());
     }
 
     /**
@@ -195,7 +196,7 @@ public class GalacticMap {
                 }
             }
         }
-        return anyCargo;
+        return true;
     }
 
     /**

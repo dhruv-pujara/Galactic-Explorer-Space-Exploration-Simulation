@@ -1,7 +1,7 @@
 /**
  * The abstract class Spaceship represents a generic spaceship entity in the galactic space.
  * It defines common attributes and behaviors for different types of spaceships.
- * @author Parisa Daeijavad
+ * @author Dhruv Pujara
  */
 public abstract class Spaceship {
 
@@ -19,10 +19,12 @@ public abstract class Spaceship {
     // methods:
 
     /**
-     * Constructs a Spaceship object with the specified attributes.
+     * Constructs a Spaceship Object with the specified attributes
      *
-     * @param ....
-     *
+     * @param id The unique identifier of the spaceship
+     * @param x The initial x-coordinate of the spaceship
+     * @param y The initial y-coordinate of the spaceship
+     * @param type The type of the spaceship
      */
     public Spaceship(String id, int x, int y, SpaceshipType type){
         this.id = id;
@@ -34,6 +36,7 @@ public abstract class Spaceship {
     /**
      * Abstract method to define the movement behavior of the spaceship.
      *
+     * @param galacticMap The galactic map on which the spaceship moves
      */
     public abstract void move(GalacticMap galacticMap);
 
@@ -41,6 +44,7 @@ public abstract class Spaceship {
      * Abstract method to define the interaction behavior of the spaceship with another spaceship.
      *
      * @param other The other spaceship to interact with
+     * @param galacticMap The galactic map on which the interaction occurs
      */
     public abstract void interact(GalacticMap galacticMap, Spaceship other);
 

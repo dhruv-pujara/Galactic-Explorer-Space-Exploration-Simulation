@@ -9,7 +9,7 @@ import java.util.Set;
  * It reads a text file containing information about spaceships and their attributes, and initializes a GalacticMap
  * based on the data read from the file.
  *
- * @author Parisa Daeijavad
+ * @author Dhruv Pujara
  *
  */
 
@@ -29,6 +29,7 @@ public class FileReader {
         Set<String> encounteredIds = new HashSet<>();
         Set<String> encounteredPositions = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new java.io.FileReader(fileName))){
+            // Read the first line to get the size of the map
             String firstLine = br.readLine();
             if (firstLine == null || firstLine.trim().isEmpty()){
                 throw new IllegalArgumentException("Invalid file format: Missing map size.");
@@ -39,6 +40,7 @@ public class FileReader {
             }catch (NumberFormatException e){
                 throw new IllegalArgumentException("Invalid file format: Missing map size.");
             }
+            // Initialize the GalacticMap with the parsed map size
             galacticMap = new GalacticMap(mapSize);
 
             String line;
@@ -46,6 +48,7 @@ public class FileReader {
                 if(line.isEmpty()){
                     continue;
                 }
+                // Split the line into parts based on spaces
                 String[] parts = line.split(" ");
                 if (parts.length < 5){
                     System.out.println(Arrays.toString(parts));
@@ -59,6 +62,7 @@ public class FileReader {
                 if(id.length() != 5){
                     throw new IllegalArgumentException("Invalid ID length: " + id);
                 }
+                // Check for unique ID
                 if (encounteredIds.contains(id)){
                     throw new IllegalArgumentException("Non-unique ID:" +id);
                 }
@@ -68,7 +72,8 @@ public class FileReader {
                 try {
                      x = Integer.parseInt(parts[2]);
                      y = Integer.parseInt(parts[3]);
-                     if(x < 0 || x >= mapSize || y < 0 || y >= mapSize){
+                    // Check if coordinates are within the map bounds
+                    if(x < 0 || x >= mapSize || y < 0 || y >= mapSize){
                          throw new ArrayIndexOutOfBoundsException("Wrong input file! position is outside of the map!");
                      }
                 } catch (NumberFormatException e){
@@ -90,6 +95,7 @@ public class FileReader {
                             System.err.println("Invalid data format: Unable to parse numeric value");
                             continue;
                         }
+                        // Place FighterShip on the GalacticMap
                         galacticMap.placeSpaceship(new FighterShip(id, x, y, damage));
                         break;
 
@@ -101,6 +107,7 @@ public class FileReader {
                             System.err.println("Invalid data format: Unable to parse numeric value");
                             continue;
                         }
+                        // Place ExplorerShip on the GalacticMap
                         galacticMap.placeSpaceship(new ExplorerShip(id, x, y, scanRange));
                         break;
 
@@ -119,6 +126,7 @@ public class FileReader {
                             System.err.println("Invalid data format: Unable to parse numeric value");
                             continue;
                         }
+                        // Place CargoShip on the GalacticMap
                         galacticMap.placeSpaceship(new CargoShip(id, x, y, cargoCapacity, currentCargo, targetX, targetY));
                         break;
 

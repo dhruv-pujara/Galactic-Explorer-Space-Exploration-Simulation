@@ -1,7 +1,7 @@
 /**
  * The CargoShip class represents a spaceship specialized in transporting cargo within the galactic space.
  * It inherits from the Spaceship class and defines specific movement, interaction, and cargo management behaviors.
- * @author Parisa Daeijavad
+ * @author Dhruv Pujara
  */
 public class CargoShip extends Spaceship {
 
@@ -37,14 +37,15 @@ public class CargoShip extends Spaceship {
      * Implements the movement behavior of the cargo ship within the galactic map.
      * The cargo ship moves towards its designated target coordinates.
      *
-     * ....................
+     * @param galacticMap The galactic map on which the cargo ship doc moves
      */
     @Override
     public void move(GalacticMap galacticMap) {
 
         System.out.print("........Moving.......");
         System.out.println();
-        if(isReachedDestination()){
+        if (isReachedDestination()) {
+            // Checking if cargo ship has reached its destination
             System.out.println("CargoShip: " + getID() + " is already in destination");
             return;
         }
@@ -53,6 +54,7 @@ public class CargoShip extends Spaceship {
         int y = getY();
         int size = galacticMap.toString().split("\n").length;
 
+        // Moving cargo ship towards target coordinates x and y
         if (x < targetX) {
             x++;
             galacticMap.moveSpaceshipTo(this, x, y);
@@ -62,6 +64,7 @@ public class CargoShip extends Spaceship {
             galacticMap.moveSpaceshipTo(this, x, y);
 
         }
+        // only if ship has moved x, it will try moving to target y
         if (x == targetX) {
             if (y < targetY) {
                 y++;
@@ -72,16 +75,19 @@ public class CargoShip extends Spaceship {
                 galacticMap.moveSpaceshipTo(this, x, y);
 
             }
+            //Checking to ensure ship stays in bounds
             if (x < 0 || x >= size || y < 0 || y > size) {
                 System.out.println("Moving Failed! out of bound x or y!");
             }
             if (galacticMap.getSpaceshipAt(x, y) != null) {
                 System.out.println("Moving Failed! the position is filled with another spaceship!");
-            }
+            } else {
                 setX(x);
                 setY(y);
+                galacticMap.moveSpaceshipTo(this, x, y);
                 System.out.println("Move Configuration");
                 System.out.println(galacticMap.toString());
+            }
         }
     }
 
@@ -91,8 +97,11 @@ public class CargoShip extends Spaceship {
      * Implements the interaction behavior of the cargo ship with another spaceship.
      * The cargo ship can exchange cargo with other cargo ships during interaction.
      *
-     * ............
+     *  @param galacticMap The galactic map on which the interaction occurs
+     *  @param other The other spaceship to interact with
+     * //
      */
+
     @Override
     public void interact(GalacticMap galacticMap, Spaceship other) {
 
@@ -104,10 +113,13 @@ public class CargoShip extends Spaceship {
         } else if (other instanceof ExplorerShip) {
             System.out.println("CargoShip cannot interact with EXPLORER");
         }else if(other instanceof CargoShip otherCargoShip) {
+            // calculation for the amount of cargo to transfer
             double transferAmount = Math.abs(otherCargoShip.getCurrentCargo() - this.currentCargo) / 2.0;
+            // Transferring cargo if the other cargo ship has more cargo
             if (otherCargoShip.getCurrentCargo() > this.currentCargo) {
                 otherCargoShip.unloadCargo(transferAmount);
                 this.loadCargo(transferAmount);
+                // Transferring cargo if the other cargo ship has less cargo
             } else if (otherCargoShip.getCurrentCargo() < this.currentCargo) {
                 otherCargoShip.loadCargo(transferAmount);
                 this.unloadCargo(transferAmount);
@@ -120,7 +132,7 @@ public class CargoShip extends Spaceship {
     /**
      * Loads cargo onto the CargoShip up to its maximum capacity.
      *
-     * ...........
+     * @param cargoAmount The amount of cargo to load onto the CargoShip
      */
     public void loadCargo(double cargoAmount) {
         if(currentCargo + cargoAmount > cargoCapacity){
@@ -134,7 +146,7 @@ public class CargoShip extends Spaceship {
     /**
      * Unloads cargo from the CargoShip.
      *
-     * ..............
+     * @param cargoAmount The amount of cargo to unload from the CargoShip
      */
     public void unloadCargo(double cargoAmount) {
         if (cargoAmount > currentCargo){
