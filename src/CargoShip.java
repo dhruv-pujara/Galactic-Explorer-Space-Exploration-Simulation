@@ -65,16 +65,15 @@ public class CargoShip extends Spaceship {
 
         }
         // only if ship has moved x, it will try moving to target y
-        if (x == targetX) {
-            if (y < targetY) {
-                y++;
-                galacticMap.moveSpaceshipTo(this, x, y);
+        else if (y < targetY) {
+            y++;
+            galacticMap.moveSpaceshipTo(this, x, y);
+        }
+        else if (y > targetY) {
+            y--;
+            galacticMap.moveSpaceshipTo(this, x, y);
+        }
 
-            } else if (y > targetY) {
-                y--;
-                galacticMap.moveSpaceshipTo(this, x, y);
-
-            }
             //Checking to ensure ship stays in bounds
             if (x < 0 || x >= size || y < 0 || y > size) {
                 System.out.println("Moving Failed! out of bound x or y!");
@@ -89,7 +88,7 @@ public class CargoShip extends Spaceship {
                 System.out.println(galacticMap.toString());
             }
         }
-    }
+
 
 
 
